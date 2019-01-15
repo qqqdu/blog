@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "hexo-renderer-sass": "^0.3.2"
+  }
+}
