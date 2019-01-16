@@ -1,4 +1,4 @@
 ---
-layout: hello-world
-title: hello world!
+layout: tags
+title: tags
 ---

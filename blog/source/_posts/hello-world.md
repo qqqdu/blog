@@ -1,38 +1,53 @@
 ---
 title: Hello World
 ---
-要开始写博客了
+这个博客会用来记录一些东西，可能是 前端 后台 或者 游戏 生活
+## 前端？ 游戏？
 
-## Quick Start
+我现在是名前端开发工程师，去年六月份毕业的。目前在杭州工作。
+毕业后在工作中的需求变得愈加重复，业余时间又没法充分利用，因此会想去做一些好玩的事儿。
 
-### Create a new post
+做app？造轮子？ 都感觉没啥劲儿。
+所以想去做一些有意思的事情。
 
-``` bash
-$ hexo new "My New Post"
-```
+于是：游戏设计 游戏开发......
+这就踏上了业余游戏开发的不归路......
 
-More info: [Writing](https://hexo.io/docs/writing.html)
+### 游戏开发
 
-### Run server
+在大学的时候，会去写一些简单的游戏，逻辑简单、完整度不高。
 
-``` bash
-$ hexo server
-```
+像 [打飞机](https://github.com/checkmind/two-planer-shoot-plan)
 
-More info: [Server](https://hexo.io/docs/server.html)
+像 [保卫嫦娥](https://github.com/checkmind/defend-Chang-e)
 
-### Generate static files
+打飞机是基于 JcScript 开发的，也是两年前在宿舍写的，时间真是快啊......
+而保卫嫦娥是在边锋当前端实习生的时候写的，也是第一次接触到H5引擎（白鹭）。当时的主管让我接触下白鹭，可能以后会让我做棋牌游戏，于是就有了这个项目用来练手，幸好在掉入棋牌游戏深坑之前结束了实习。
 
-``` bash
-$ hexo generate
-```
+### 微信小游戏
 
-More info: [Generating](https://hexo.io/docs/generating.html)
+今年移动端游戏平台必须要提一下 微信小游戏了。
+我在四月份的时候也着手开发一款剧情消除游戏，因为只是用业余时间开发，所以写了6个月，惭愧惭愧。
 
-### Deploy to remote sites
+遇到最大的问题是技术之外的，游戏素材是真不好找，所以很大一段时间都浪费到了找素材的过程。
+你可以在微信小程序搜索 「星球大碰撞」 来试玩它。虽然我并不觉得它很好玩。
 
-``` bash
-$ hexo deploy
-```
+你也可以扫底部二维码来试玩它
+![img](https://qqqdu.oss-cn-beijing.aliyuncs.com/bingo/qrcode.jpeg)
 
-More info: [Deployment](https://hexo.io/docs/deployment.html)
+### 放屁超人
+
+在开发完了 「星球大碰撞」游戏之后，我意识到必须要写一款“自己”觉得好玩的游戏，连自己都觉得不好玩，肯定没多少人玩。（没资本的情况下）。
+
+在和几个老同学爬山的时候想一起开发游戏，我们有做web后台的，有做web前端的，当然也有本职游戏开发的。最终五个人决定加入业余开发小组。
+
+游戏一股脑决定为平台冒险类游戏，游戏大概剧情是一个被反派喂了毒药的肥宅 放屁的威力极大，为了复仇，踏上了冒险之路。引擎还是用白鹭，因为Typescript的语法足够简单，让所有人都能尽快切入进来。
+
+于是，我们开始了业余独立游戏开发之路.......
+
+### 结束
+
+在这里，我会记录一些开发遇到的难点。
+你可以找我：
+*qq: 1036971959*
+*email: 1036971959@qq.com*
