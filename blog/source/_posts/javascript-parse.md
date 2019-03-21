@@ -1,7 +1,7 @@
 ---
 title: 抽象语法树(AST)
 ---
-玩转抽象语法树
+抽象语法树入门到放弃？
 
 ## 抽象语法树（Abstract syntax tree AST）
 
@@ -110,7 +110,8 @@ recast.run(function(ast, printSource) {
 
 如果我们想对代码里的所有函数、表达式或者命名进行批量操作。 `recast` 提供了 `recast.visit` 方法进行节点树的遍历。
 比如以下代码是遍历 `ExpressionStatement`，只要文档中能查到的，都可以遍历对应的格式。
-```javascript  
+```javascript 
+// map.js
 const recast  = require('recast')
 
 recast.run(function(ast, printSource) {
@@ -132,7 +133,19 @@ recast.run(function(ast, printSource) {
 
 ```javascript
  import { extend } from 'jquery'
+/*
+ 改成
+*/
  import { extend } from 'utils/common'
+
+ import $ from 'jquery'
+ $.extend()
+/*
+ 改成
+*/
+ import { extend } from 'jquery'
+ extend()
+
 ```
 
 当时的做法是全局检索关键字 `jquery`，然后逐一去修改替换，如果需要修改的文件很多的话，一个美好的下午就没了。  
@@ -147,6 +160,59 @@ from
 ```
 用 `AST` 怎么做呢？
 
+
+```javascript
+var fs = require('fs')
+const recast = require("recast");
+
+const { literal,  importSpecifier, identifier, callExpression} = recast.types.builders;
+
+fs.readdir('./codes', function(err, files){
+  files.map((fileName) => {
+    const fileUrl = `./codes/${fileName}`
+    console.log(fileUrl)
+    fs.readFile(fileUrl, function(err, data) {
+      // 读取文件失败/错误
+      if (err) {
+          throw err;
+      }
+      const code = data.toString()
+      const ast = recast.parse(code);
+    
+      recast.visit(ast, {
+        visitImportDeclaration: function(path) {
+          console.log('-----------')
+          if('jquery' === path.node.source.value) {
+            path.node.specifiers[0] = importSpecifier(identifier('extend'))
+            
+            console.log(path.node.specifiers)
+            path.node.source = literal('utils/extend')
+          }
+          return false
+        },
+        visitExpressionStatement: function(path) {
+          console.log('++++++')
+          if(
+            path.node.expression.callee.object.name === '$' &&
+            path.node.expression.callee.property.name === 'extend'
+          ) {
+            path.node.expression = callExpression(identifier('extend'), path.node.expression.arguments)
+          }
+          // console.log(memberExpression(identifier(''),identifier('extend'), false))
+          return false
+        }
+
+      });
+      const output = recast.prettyPrint(ast, { tabWidth: 2 }).code
+      fs.writeFile(fileUrl, output, {}, function(){
+        console.log(`wirte ${fileName} OK!`);
+      })
+    });
+  })
+  console.log(files)
+})
+
+```
 
 https://gitlab.dxy.net/f2e/dxy_mall/commit/509c276090807de8210e2d4b92c6a2d9f0dd4540
 ## 结束
