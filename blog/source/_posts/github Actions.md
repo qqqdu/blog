@@ -1,5 +1,5 @@
 ---
-title: 你还不懂CI/CD？Github都要骂人了
+title: Github Actions
 ---
 从CI/CD到Gihtub Actions
 
@@ -33,3 +33,8 @@ Automate any workflow with GitHub Actions. See the latest updates and register f
 > 人话：持续部署是在持续交付的下一环节，想象一下，当我们通过了自动化测试，通过了QA，那是不是意味着，代码已经可以发线上了，我们连 触发 发布这个动作都不需要了，当我们将分支 push 到 master 的时候，CD 帮我们自动发布到线上。每一次改动都会直接和用户见面。线上有bug，我们可以迅速修掉。
 ### CI/CD
 ![图](https://pic4.zhimg.com/80/v2-958984fefb4525db84839cdc619294bf_hd.jpg)
+
+### Github Action
+
+现在是 09.01，终于拿到了 Github Action的内测机会。
+![](https://img1.dxycdn.com/2019/0901/932/3365698690744026875-2.png)
