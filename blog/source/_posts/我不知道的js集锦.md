@@ -228,6 +228,7 @@ http2 引入流的概念，同一域名只建立一个http请求。压缩了请�
 ### HTTPS 握手过程中，客户端如何验证证书的合法性   💋
 浏览器会内置大多数证书（伪造证书来进行中间人攻击）
 https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/142
+https://www.cnblogs.com/evan-blog/p/9867561.html
 ### 三次握手 四次挥手 💋
 #### 三次握手  
 假设只有两次握手。  
