@@ -288,6 +288,7 @@ https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/142
 503   （服务不可用） 服务器目前无法使用（由于超载或停机维护）。 通常，这只是暂时状态。
 504   （网关超时）  服务器作为网关或代理，但是没有及时从上游服务器收到请求。
 505   （HTTP 版本不受支持） 服务器不支持请求中所用的 HTTP 协议版本。
+```
 ***
 ## 框架篇
 ### React声明周期及自己的理解  
