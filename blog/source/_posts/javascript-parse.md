@@ -125,11 +125,10 @@ recast.run(function(ast, printSource) {
 ```
 ## 很久之前的一个需求
 
-在之前TOH还负责丁当商城(单入口Vue项目)的时候，`xusy` 给了我这么一个需求。
+在刚参加工作的时候，组长 给了我这么一个需求。
 
 > 在以前因为某种原因，引入了 Jquery ，但只用了 `$.extend` 方法，现在需要去除Jquery，重写这个方法。举个简单的例子。
-当我重写完相关函数后，代码大概是这个样子。
-> https://gitlab.dxy.net/f2e/dxy_mall/commit/0770c8f9e531fc58727e99dce650d0bd4c2568cb
+当我重写完相关函数后，代码大概是这个样子。  
 
 ```javascript
  import { extend } from 'jquery'
@@ -214,7 +213,6 @@ fs.readdir('./codes', function(err, files){
 
 ```
 
-https://gitlab.dxy.net/f2e/dxy_mall/commit/509c276090807de8210e2d4b92c6a2d9f0dd4540
 ## 结束
 > https://segmentfault.com/a/1190000016231512
 > https://astexplorer.net

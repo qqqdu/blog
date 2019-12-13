@@ -43,3 +43,7 @@ jison(鸡森？) 库
 在当前目录生成了 calculator.js 文件，这个文件是根据 calculator.jison 生成的  
 https://github.com/zaach/jison  
 看了看jison文件，根本不是人看的，
+
+https://www.cnblogs.com/tugenhua0707/p/7759414.html
+https://www.cnblogs.com/tugenhua0707/p/7759414.html
+https://segmentfault.com/a/1190000017241258

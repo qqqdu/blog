@@ -74,4 +74,52 @@ props = {
 ```
 如果 `flag` 发生变化，`Vue` 只会对 `input` 进行修补，不会重新渲染 `input`，它会尽可能的复用 `DOM`，所以当你在 `input` 键入值时，再切换 `flag`，值依然会存在。  
 
-给他们赋值不同的 `key`，就会避免这种“错误”。
+给他们赋值不同的 `key`，就会避免这种“错误”  
+
+再看下面这个例子
+```html
+<div v-for='item in items'>
+  <input type='' />
+</div>
+```
+
+当 items 顺序发生变化时，vue 默认不会将节点的顺序调换，因为这比直接删除节点再生成节点的开销大多了。所以再这个 demo 中，Vue 不会复用节点。  
+
+但当子组件的内容过多或者嵌套太深时，复用又很重要了，这时，我们需要加上 `key` ，顺序发生变化时，Vue会复用它。  
+
+## is字段
+
+在下面的例子中，使用 `is="todo-item"` 来代替 `<todo-item>` 的写法，因为 ul 内部只有 li 标签有效，这种写法避免了将 `<todo-item>` 识别为标签潜在的错误。
+
+```html
+<ul>
+  <li
+    is="todo-item"
+    v-for="(todo, index) in todos"
+    v-bind:key="todo.id"
+    v-bind:title="todo.title"
+    v-on:remove="todos.splice(index, 1)"
+  ></li>
+</ul>
+```
+
+但以上问题只会在 vue 以 cdn 引入时出现。
+
+## v-modal 修饰符
+
+### .lazy  
+
+在 `input` change 时，才同步，而非 `onInput` 时  
+
+### .number  
+
+自动将用户输入的值转为 number 类型  
+
+### .trim
+
+去除首位字符串  
+
+### 组件也可以用 v-modal  
+
+- props 需要有绑定的值  
+- 组件 input 时，需要 $emit('input', event)
