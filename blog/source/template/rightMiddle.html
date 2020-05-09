@@ -1,0 +1,206 @@
+<html>
+<meta charset="UTF-8">
+<head></head>
+<style>
+body {
+  padding-top: 30px;
+}
+.stack-container {
+  margin: 0 auto;
+  display: flex;
+  line-height: 50px;
+}
+.stack {
+  width: 30px;
+  height: 50px;
+  text-align: center;
+  background: #3a3a3a;
+  color: white;
+  margin-left: 2px;
+  line-height: 50px;
+}
+.canvas1 {
+  position: relative;
+  padding-left: 100px;
+  margin: 0 30px 0;
+}
+.canvas2 {
+  position: relative;
+  padding-left: 100px;
+  margin: 60px 30px 0;
+}
+button{
+  margin: 30px 0 30px;
+}
+</style>
+<body>
+  <button id='start'>中缀转后缀过程</button>
+  <div>
+    输入<span id='input_str'></span>
+  </div>
+  <div>
+    输出<span id='result_str'></span>
+  </div>
+  <div style='overflow: hidden;' class='canvas1'>
+    <div id='input' class='stack-container'>输入栈</div>
+    <div id='container' class='stack-container'><span>字符栈</span></div>
+    <div id='reducer' class='stack-container'>结果栈</div>
+  </div>
+  <button id='startCal'>计算后缀表达式过程</button>
+  <div style='overflow: hidden;' class='canvas2'>
+    <div id='RPN_input' class='stack-container'>输入栈</div>
+    <div id='RPN_reducer' class='stack-container'>结果栈</div>
+  </div>
+</body>
+<script>
+// 中缀转后缀
+function calculator(str) {
+  document.getElementById('input_str').innerHTML = str
+  document.getElementById('input').innerHTML = `输入栈${printStack(str.split(''))}`
+  let n = 0, charStack = [], numStack = [], reducerStr =  [], leftIndex = -1
+  charStack = watch(charStack, 'char')
+  reducerStr = watch(reducerStr, 'reducer')
+  const op = {'+' : 1, '-' : 1, '*' : 2, '/' : 2, '(' : 3, ')' : 3}
+  while(n < str.length) {
+    const byte = str[n]
+    // 数字
+    if(/\d/.test(byte)) {
+      reducerStr.push(byte)
+    } else if(/\(|\)/.test(byte)) {
+      // 左括号入栈
+      if(byte === '(') {
+        charStack.push(byte)
+        leftIndex = n
+        console.log('左括号', byte)
+      // 右括号出栈
+      } else {
+        let nowChar = charStack.pop()
+        while(nowChar && nowChar !== '(') {
+          reducerStr.push(nowChar)
+          nowChar = charStack.pop()
+        }
+      }
+    // 符号
+    } else {
+      // 字符栈顶元素
+      let nowChar = charStack[charStack.length - 1]
+      while(nowChar && op[byte] < op[nowChar] && nowChar !== '(') {
+        charStack.pop()
+        reducerStr.push(nowChar)
+        nowChar = charStack[charStack.length - 1]
+      }
+      charStack.push(byte)
+    }
+    // console.warn('字符',charStack)
+    // console.warn('结果', reducerStr)
+    n++
+  }
+  while(charStack.length) {
+    reducerStr.push(charStack.pop())
+  }
+  return reducerStr.join('')
+}
+const stack1 = []
+function watch(obj, type) {
+  return new Proxy(obj, {
+    set(target, key, val, obj) {
+      stack1.push({
+        data: JSON.parse(JSON.stringify(target)),
+        type
+      })
+      return Reflect.set(target, key, val)
+    },
+    get(target, key, val) {
+      const res =  Reflect.get(target, key, val)
+      return res
+    }
+  })
+}
+function printStack(arr) {
+  return arr.map(val => {
+    console.log(val)
+    if(!val) {return ''}
+    return  `<div class='stack'>${val}</div>`
+  }).join('')
+}
+// 结果字符串
+const res = calculator('1*(2+3)+9*2+9')
+document.getElementById('result_str').innerHTML = res
+document.getElementById('start').onclick = function() {
+  start()
+}
+function start() {
+  let i = 0
+  setInterval(() => {
+    if(i > stack1.length-1) {
+      return
+    }
+    /*console.log(i, stack2.length-1, stack2[i].join(' '))*/
+    console.log(stack1[i])
+    if(stack1[i].data) {
+      const div = stack1[i].data.map(val => {
+        console.log(val)
+        if(!val) {return ''}
+        return  `<div class='stack'>${val}</div>`
+      })
+      
+      if(stack1[i].type === 'char') {
+        document.getElementById('container').innerHTML = `<span>字符栈</span>${div.join('')}`
+      } else {
+        document.getElementById('reducer').innerHTML = `<span>结果栈</span>${div.join('')}`
+      }
+    }
+    i++
+  }, 2000)
+}
+document.getElementById('startCal').onclick = startCal
+const watchRpn = []
+const result = RpnCalculator(res)
+console.log(result)
+document.getElementById('RPN_input').innerHTML = '输入栈' + printStack(res.split(''))
+function startCal() {
+  let i = 0
+  setInterval(() => {
+    if(i >= watchRpn.length) {return}
+    document.getElementById('RPN_reducer').innerHTML = '输出栈' + printStack(watchRpn[i])
+    i++
+  }, 1000)
+}
+
+function RpnCalculator(arr) {
+  arr = arr.split('')
+  const op = ['+', '-', '*', '/']
+  const byte = []
+  while(arr.length) {
+    let now = arr.shift()
+    const index = op.indexOf(now)
+    console.log(byte)
+    // 是符号
+    if(index !== -1) {
+      // 栈顶两元素
+      const end = +byte.pop(),
+            first = +byte.pop();
+      switch(index){
+        case 0:
+          byte.push( first + end)
+          break;
+        case 1:
+          byte.push( first - end)
+          break;
+        case 2:
+          byte.push( first * end)
+          break;
+        case 3:
+          byte.push( first / end)
+          break;
+      }
+    // 不是符号
+    } else {
+      byte.push(now)
+    }
+    watchRpn.push([...byte])
+  }
+  return byte[0]
+}
+</script>
+</html>

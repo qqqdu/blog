@@ -1,0 +1,49 @@
+<html>
+<meta charset="UTF-8">
+<head>
+<script src="./libs/jquery.js"></script>
+</head>
+<style>
+body {
+  padding-top: 30px;
+}
+.stack-container {
+  margin: 0 auto;
+  display: flex;
+  line-height: 50px;
+}
+.stack {
+  width: 30px;
+  height: 50px;
+  text-align: center;
+  background: #3a3a3a;
+  color: white;
+  margin-left: 2px;
+  line-height: 50px;
+}
+.canvas1 {
+  position: relative;
+  padding-left: 100px;
+  margin: 0 30px 0;
+}
+.canvas2 {
+  position: relative;
+  padding-left: 100px;
+  margin: 60px 30px 0;
+}
+button{
+  margin: 30px 0 30px;
+}
+</style>
+<body>
+<input data-mvvm="name"/>
+<div data-mv="year"></div>
+<div data-mv="name"></div>
+<button></button>
+</body>
+<script src='./mvvm.js'></script>
+<script>
+window.onload = function() {
+}
+</script>
+</html>
