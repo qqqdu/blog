@@ -60,9 +60,12 @@ let app = {
   controller: {
   }
 }
-app._bindMVVM()
-app._render()
-app._dirtyCheck()
-setTimeout(() => {
-  app.model.data.year = 100000
-}, 1000)
+
+window.onload = function() {
+  app._bindMVVM()
+  app._render()
+  app._dirtyCheck()
+  setTimeout(() => {
+    app.model.data.year = 100000
+  }, 1000)
+}

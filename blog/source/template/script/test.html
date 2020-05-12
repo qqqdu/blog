@@ -1,0 +1,142 @@
+<html>
+<head></head>
+<style>
+body {
+  padding-top: 200px;
+}
+.stack-container {
+  width: 100px;
+  margin: 0 auto;
+  height: 300px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column-reverse;
+  float: left;
+  align-items: center;
+}
+.stack {
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  background: #3a3a3a;
+  color: white;
+  line-height: 30px;
+}
+</style>
+<body>
+  <button id='start'>开始</button>
+  <div>
+    输入<span id='input_str'></span>
+  </div>
+  <div>
+    输出<span id='result_str'></span>
+  </div>
+  <div style='overflow: hidden;'>
+    <div id='input' class='stack-container'>输入栈</div>
+    <div id='container' class='stack-container'><span>字符栈</span></div>
+    <div id='reducer' class='stack-container'>结果栈</div>
+  </div>
+</body>
+<script>
+function calculator(str) {
+  document.getElementById('input_str').innerHTML = str
+  document.getElementById('input').innerHTML = `输入栈${printStack(str.split(''))}`
+  let n = 0, charStack = [], numStack = [], reducerStr =  [], leftIndex = -1
+  charStack = watch(charStack, 'char')
+  reducerStr = watch(reducerStr, 'reducer')
+  const op = {'+' : 1, '-' : 1, '*' : 2, '/' : 2, '(' : 3, ')' : 3}
+  while(n < str.length) {
+    const byte = str[n]
+    // 数字
+    if(/\d/.test(byte)) {
+      reducerStr.push(byte)
+    } else if(/\(|\)/.test(byte)) {
+      // 左括号入栈
+      if(byte === '(') {
+        charStack.push(byte)
+        leftIndex = n
+        console.log('左括号', byte)
+      // 右括号出栈
+      } else {
+        let nowChar = charStack.pop()
+        while(nowChar && nowChar !== '(') {
+          reducerStr.push(nowChar)
+          nowChar = charStack.pop()
+        }
+      }
+    // 符号
+    } else {
+      // 字符栈顶元素
+      let nowChar = charStack[charStack.length - 1]
+      while(nowChar && op[byte] < op[nowChar] && nowChar !== '(') {
+        charStack.pop()
+        reducerStr.push(nowChar)
+        nowChar = charStack[charStack.length - 1]
+      }
+      charStack.push(byte)
+    }
+    // console.warn('字符',charStack)
+    // console.warn('结果', reducerStr)
+    n++
+  }
+  while(charStack.length) {
+    reducerStr.push(charStack.pop())
+  }
+  return reducerStr.join('')
+}
+const stack1 = []
+function watch(obj, type) {
+  return new Proxy(obj, {
+    set(target, key, val, obj) {
+      stack1.push({
+        data: JSON.parse(JSON.stringify(target)),
+        type
+      })
+      return Reflect.set(target, key, val)
+    },
+    get(target, key, val) {
+      const res =  Reflect.get(target, key, val)
+      return res
+    }
+  })
+}
+function printStack(arr) {
+  return arr.map(val => {
+    console.log(val)
+    if(!val) {return ''}
+    return  `<div class='stack'>${val}</div>`
+  }).join('')
+}
+const res = calculator('1*(2+3)+9*2+9')
+document.getElementById('result_str').innerHTML = res
+document.getElementById('start').onclick = function() {
+  start()
+}
+function start() {
+  let i = 0
+  setInterval(() => {
+    if(i > stack1.length-1) {
+
+      return
+    }
+    /*console.log(i, stack2.length-1, stack2[i].join(' '))*/
+    console.log(stack1[i])
+    if(stack1[i].data) {
+      const div = stack1[i].data.map(val => {
+        console.log(val)
+        if(!val) {return ''}
+        return  `<div class='stack'>${val}</div>`
+      })
+      
+      if(stack1[i].type === 'char') {
+        document.getElementById('container').innerHTML = `<span>字符栈</span>${div.join('')}`
+      } else {
+        document.getElementById('reducer').innerHTML = `<span>结果栈</span>${div.join('')}`
+      }
+    }
+    i++
+  }, 1000)
+}
+
+</script>
+</html>
