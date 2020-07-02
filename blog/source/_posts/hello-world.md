@@ -1,5 +1,6 @@
 ---
 title: Hello World
+date: 2019/01/14
 ---
 这个博客会用来记录一些东西，可能是 前端 后台 或者 游戏 生活
 ## 前端？ 游戏？
@@ -17,9 +18,9 @@ title: Hello World
 
 在大学的时候，会去写一些简单的游戏，逻辑简单、完整度不高。
 
-像 [打飞机](https://github.com/checkmind/two-planer-shoot-plan)
+像 [打飞机](https://github.com/qqqdu/two-planer-shoot-plan)
 
-像 [保卫嫦娥](https://github.com/checkmind/defend-Chang-e)
+像 [保卫嫦娥](https://github.com/qqqdu/defend-Chang-e)
 
 打飞机是基于 JcScript 开发的，也是两年前在宿舍写的，时间真是快啊......
 而保卫嫦娥是在边锋当前端实习生的时候写的，也是第一次接触到H5引擎（白鹭）。当时的主管让我接触下白鹭，可能以后会让我做棋牌游戏，于是就有了这个项目用来练手，幸好在掉入棋牌游戏深坑之前结束了实习。

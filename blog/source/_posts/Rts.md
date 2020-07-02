@@ -1,5 +1,6 @@
 ---
 title: React cli
+date: 2019/09/27
 ---
 不想再重复的clone老文件了  
 # Why 

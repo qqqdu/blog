@@ -1,5 +1,6 @@
 ---
 title: Github Actions
+date: 2019/08/11
 ---
 从CI/CD到Gihtub Actions
 
