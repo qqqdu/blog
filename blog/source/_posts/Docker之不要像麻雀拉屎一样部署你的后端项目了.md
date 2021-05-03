@@ -35,13 +35,21 @@ docker python nodejs
 
 ## Docker 介绍
 
-`Docker` 的意思是 码头工人/搬运工人
+`Docker` 的意思是 码头工人/搬运工人，它的起名来自于集装箱策略，简单的来描述下：
+
+早期海运成本很高，有一部分时间和金钱花在了装货和卸货，由于运输货物的大小不同，为了节省空间需要人员来进行货物打包并且搬上轮船，可想而知成本极大，要知道贸易的积极性取决于利润，而减少贸易成本则会提高利润。如何减少这个成本？
+
+为何不把所有东西塞进一个统一大小的箱子里，统一装卸和搬运，于是集装箱出现了，集装箱不仅仅是一个铁盒子这么简单，伴随它的有集装箱标准，有了统一的标准，才能让集装箱被搬上火车/搬上货车/搬上轮船。
+
+先从集装箱的思绪中出来，想想我们拿到一台新服务器，装软件/配环境变量/装各种包，一顿操作。像不像那个在码头流着汗打包的工人？
+
+Docker 就是来解放我们的。他有三个概念：仓库/镜像和容器。仓库类比为 github，他是用来存镜像的，而镜像就相当于集装箱标准，它规定了软件运行的环境和版本。容器就是我们服务运行的标准化环境，他是由镜像打包而来的。可能你看到这里有点懵，但没关系，一个简单的实例就能让你理解这些。
 
 ### 开发环境安装 `Docker`
 
 推荐直接根据菜鸟教程安装桌面端，省去很多烦恼: [MAC 安装](https://www.runoob.com/docker/macos-docker-install.html)
 
-因为我很懒，关于 Docker 的基本操作就不介绍了，我从 `Docker Compose` 直接讲起，
+因为我很懒，关于 Docker 的基本操作就不介绍了，后面碰见需求一步步熟悉，我先从 `Docker Compose` 直接讲起，
 
 ### Docker Compose
 
@@ -119,6 +127,62 @@ node_modules
 `docker-compose up`
 此时，你的服务就可以通过 `localhost` 访问到了。
 
-当你想在一台新服务器上部署该应用时，一句命令就省去你的烦恼，你又多了一个午后。而且云服务基本都内置了 Docker，应用的部署更为简单。
+### 进入容器
 
-## 前端部署
+你已经启动了一个容器，但什么也没见到过，他就运行起来了，现在，你可以运行 `docker ps` 命令看到当前运行的容器。
+
+之后，通过 `docker exec -it container-id /bin/bash` 进入容器内部，熟悉的 `/app` 工作空间摆在你面前。
+
+当你修改了代码之后，你可以通过 `docker-compose up --build` 再重新构建容器，因为有缓存机制，这次构建会很快速！
+
+### 部署
+
+公司内的 devCloud 已经内置了 docker，你只需要登陆云开发，然后下载安装 docker-compose：
+
+```c
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+将代码克隆到相关目录，然后在项目根目录执行：  
+`docker-compose up`
+
+一切都完成了！！！
+
+### python 配置
+
+这里再贴一下 python 的 Dockerfile：
+
+```
+FROM python:3.8.5
+WORKDIR /code
+ENV FLASK_APP ./search-picture/server.py
+ENV FLASK_RUN_HOST 0.0.0.0
+ENV FLASK_RUN_PORT 8082
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY . /code
+CMD ["flask", "run"]
+```
+
+## 总结
+
+我用两周时间将自己的两个后端服务 docker 化，容器应该是最小粒度的，你可以把它想像成组件，所以对于 python 服务和 node 服务应该拆分开了，作为两个容器运行，但我之前使用 node 服务来爬取图片，存在 python 的工作目录，然后 python 再去消费，这个过程是耦合的。
+
+所以我用了很大一部分时间去拆分服务，爬取图片部分也用 python 重写了。现在两个项目都容器化，服务变得十分容易拓展，这意味着什么？
+
+我的服务可以光速交接/服务器裁撤与我无关/本地环境和云端保持一致
+
+## 常见问题
+
+_备注：你可能会遇到这个问题，参考：http://km.oa.com/group/16523/articles/show/412832 _
+
+> 最近使用公司自研云中的 docker 在创建网络时候出现了以下错误：
+> Docker “ERROR: could not find an available, non-overlapping IPv4 address pool among the defaults to assign to the network”  
+>  解决方法：
+> 需要指定一下 IP 段就好了
+> // 删除一个网段，可选 172 和 198
+> ip route del 172.16.0.0/12
+> // tlinux 需要改路由，下面这个文件不删除重启又会占用网段
+> vim /etc/sysconfig/network-scripts/setdefaultgw-tlinux
+> 删除下面一行
+> 172.16.0.0/12
