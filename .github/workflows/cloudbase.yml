@@ -1,0 +1,44 @@
+name: GitHub Actions Build and Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. git checkout...
+
+        uses: actions/checkout@v1
+
+      - name: 2. setup nodejs...
+
+        uses: actions/setup-node@v1
+
+      - name: 3. install hexo...
+
+        run: |
+          npm install hexo-cli -g
+          npm install
+          git clone -b master https://github.com/lewis-geek/hexo-theme-Aath.git themes/aath
+
+      - name: 4. hexo generate public files...
+
+        run: |
+          hexo clean
+          hexo g
+      # 部署到腾讯云
+      - name: Deploy static to Tencent CloudBase
+
+        id: deployStatic
+        uses: TencentCloudBase/cloudbase-action@v1
+        with:
+          secretId: ${{ secrets.SECRET_ID }}
+          secretKey: ${{ secrets.SECRET_KEY }}
+          envId: ${{ secrets.ENV_ID }}
+          staticSrcPath: ./public
+
+      - name: Get the deploy result
+
+        run: echo "Deploy to cloudbase result ${{ steps.deployStatic.outputs.deployResult }}"
